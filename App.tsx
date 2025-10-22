@@ -1,10 +1,12 @@
+// ============================================
 // Title: Chef Christoffel's Menu App
 // Author: Trushen Keoran Naidoo
 // Date: 19/10/2025
 // Version: 4.5
 // Based on the learning materials of the Independent Institute of Education (IIE)
+// ============================================
 
-import React, { useState } from "react";
+import React, { useState } from "react"; // React core and useState Hook for managing component state
 import {
   StyleSheet,
   Text,
@@ -20,20 +22,29 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
-} from "react-native";
+} from "react-native"; // Core React Native components
+
+// React Navigation imports for page navigation and typed props
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
+
+// Picker component for dropdown menu
 import { Picker } from "@react-native-picker/picker";
+
+// Type definitions imported from local Type.tsx
 import { RootStackParamList, ChefC } from "./Type";
 
-// Predefined items
+// ============================================
+// Predefined Menu Items (Starter, Main, Dessert)
+// ============================================
 const predefinedItems: ChefC[] = [
   {
     itemName: "Honey Garlic Chicken",
-    description: "A well based honey garlic chicken with herbs and spices which comes with a side of your choice.",
+    description:
+      "A well based honey garlic chicken with herbs and spices which comes with a side of your choice.",
     category: "Main Meal",
     price: 120,
     intensity: "Balanced",
@@ -63,12 +74,13 @@ const predefinedItems: ChefC[] = [
   },
 ];
 
-// ======================
-// Manage Screen
-// ======================
+// ============================================
+// Manage Screen: Add new menu item
+// ============================================
 function ManageScreen(
   props: NativeStackScreenProps<RootStackParamList, "ManageScreen">
 ) {
+  // State variables for user inputs
   const [itemName, setItemName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -76,10 +88,15 @@ function ManageScreen(
   const [image, setImage] = useState("");
   const [ingredients, setIngredients] = useState("");
 
+  // Form submission logic
   const handleSubmit = () => {
+    // Validation: ensure all fields are filled
     if (itemName && description && category && price) {
       const priceValue = parseFloat(price);
+
+      // Validate price must be > 0
       if (priceValue > 0) {
+        // Determine intensity level based on price range
         const intensity =
           priceValue < 100
             ? "Mild"
@@ -87,6 +104,7 @@ function ManageScreen(
             ? "Balanced"
             : "Strong";
 
+        // Create a new item object following the ChefC interface
         const newItem: ChefC = {
           itemName,
           description,
@@ -97,10 +115,13 @@ function ManageScreen(
           ingredients: ingredients.split(",").map((i) => i.trim()),
         };
 
+        // Add new item to existing list using setter passed via navigation params
         props.route.params.setItems([
           ...props.route.params.items,
           newItem,
         ]);
+
+        // Return to the previous screen
         props.navigation.goBack();
       } else {
         Alert.alert("Invalid Price", "Price must be greater than zero.");
@@ -114,14 +135,17 @@ function ManageScreen(
   };
 
   return (
+    // View adjusts when keyboard appears (especially on iOS)
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
+      {/* Allows dismissing the keyboard by tapping outside input fields */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.formContainer}>
           <Text style={styles.formHeader}>Add a new item to the menu</Text>
 
+          {/* Text inputs for item details */}
           <TextInput
             style={styles.input}
             placeholder="Item Name"
@@ -136,17 +160,24 @@ function ManageScreen(
             onChangeText={setDescription}
           />
 
+          {/* Dropdown Picker for Category Selection */}
           <View style={styles.pickerWrapper}>
             <Text style={styles.label}>Category</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={category}
-                onValueChange={(value: React.SetStateAction<string>) => setCategory(value)}
+                onValueChange={(value: React.SetStateAction<string>) =>
+                  setCategory(value)
+                }
                 mode="dropdown"
                 dropdownIconColor="#000000ff"
                 style={styles.pickerStyle}
               >
-                <Picker.Item label="Please select a category" value="" color="#999" />
+                <Picker.Item
+                  label="Please select a category"
+                  value=""
+                  color="#999"
+                />
                 <Picker.Item label="Starter" value="Starter" />
                 <Picker.Item label="Main Meal" value="Main Meal" />
                 <Picker.Item label="Dessert" value="Dessert" />
@@ -154,6 +185,7 @@ function ManageScreen(
             </View>
           </View>
 
+          {/* Numeric input for price */}
           <TextInput
             style={styles.input}
             placeholder="Price (e.g. 100)"
@@ -162,6 +194,7 @@ function ManageScreen(
             onChangeText={setPrice}
           />
 
+          {/* Optional image URL input */}
           <TextInput
             style={styles.input}
             placeholder="Image URL"
@@ -169,10 +202,12 @@ function ManageScreen(
             onChangeText={setImage}
           />
 
+          {/* Image preview only if a valid URL is entered */}
           {image ? (
             <Image source={{ uri: image }} style={styles.imagePreview} />
           ) : null}
 
+          {/* Ingredients input (comma-separated values) */}
           <TextInput
             style={styles.input}
             placeholder="Ingredients (comma separated)"
@@ -180,10 +215,12 @@ function ManageScreen(
             onChangeText={setIngredients}
           />
 
+          {/* Button to save item */}
           <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
             <Text style={styles.saveButtonText}>Save Item</Text>
           </TouchableOpacity>
 
+          {/* Button to cancel and go back */}
           <TouchableOpacity
             style={styles.cancelButton}
             onPress={() => props.navigation.goBack()}
@@ -196,14 +233,15 @@ function ManageScreen(
   );
 }
 
-// ======================
-// Home Screen
-// ======================
+// ============================================
+// Home Screen: Displays all menu items
+// ============================================
 function HomeScreen(
   props: NativeStackScreenProps<RootStackParamList, "HomeScreen">
 ) {
-  const [items, setItems] = useState<ChefC[]>(predefinedItems);
+  const [items, setItems] = useState<ChefC[]>(predefinedItems); // Load predefined items by default
 
+  // Remove an item by index with confirmation alert
   const removeItem = (index: number) => {
     Alert.alert("Remove Item", "Are you sure you want to remove this item?", [
       { text: "Cancel", style: "cancel" },
@@ -216,11 +254,13 @@ function HomeScreen(
       <Text style={styles.mainTitle}>Christoffel's</Text>
       <Text style={styles.subTitle}>Fine Dining Experience</Text>
 
+      {/* Display all menu items using FlatList */}
       <FlatList
         data={items}
         keyExtractor={(_, i) => i.toString()}
         renderItem={({ item, index }) => (
           <View style={styles.card}>
+            {/* Item Image */}
             <Image source={{ uri: item.image || "" }} style={styles.cardImage} />
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>{item.itemName}</Text>
@@ -228,6 +268,8 @@ function HomeScreen(
               <Text style={styles.cardMeta}>
                 {item.category}. R{item.price} ({item.intensity})
               </Text>
+
+              {/* Remove Button for each item */}
               <TouchableOpacity
                 style={styles.removeButton}
                 onPress={() => removeItem(index)}
@@ -239,9 +281,12 @@ function HomeScreen(
         )}
       />
 
+      {/* Add new item button (navigates to ManageScreen) */}
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => props.navigation.navigate("ManageScreen", { items, setItems })}
+        onPress={() =>
+          props.navigation.navigate("ManageScreen", { items, setItems })
+        }
       >
         <Text style={styles.addText}>+ Add New Item</Text>
       </TouchableOpacity>
@@ -249,18 +294,21 @@ function HomeScreen(
   );
 }
 
-// ======================
-// Welcome Screen
-// ======================
+// ============================================
+// Welcome Screen: App entry point
+// ============================================
 function WelcomeScreen({ navigation }: { navigation: any }) {
   return (
     <SafeAreaView style={styles.welcomeContainer}>
+      {/* Hero image for background */}
       <Image
         source={{
           uri: "https://images.unsplash.com/photo-1600891963935-5b8e04d9a54a?auto=format&fit=crop&w=1200&q=80",
         }}
         style={styles.heroImage}
       />
+
+      {/* Overlay with welcome text and button */}
       <View style={styles.overlay}>
         <Text style={styles.welcomeTitle}>
           Welcome to Chef Christoffel's Restaurant!
@@ -268,6 +316,8 @@ function WelcomeScreen({ navigation }: { navigation: any }) {
         <Text style={styles.welcomeText}>
           The best food and experience right here for you to try.
         </Text>
+
+        {/* Navigate to Home Screen */}
         <TouchableOpacity
           style={styles.startButton}
           onPress={() => navigation.navigate("HomeScreen")}
@@ -279,24 +329,30 @@ function WelcomeScreen({ navigation }: { navigation: any }) {
   );
 }
 
-// ======================
-// Main App
-// ======================
+// ============================================
+// Main App Component (Navigation Setup)
+// ============================================
 export default function App() {
-  const Stack = createNativeStackNavigator<RootStackParamList>();
+  const Stack = createNativeStackNavigator<RootStackParamList>(); // Stack navigator type-safe declaration
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        {/* Welcome Screen */}
         <Stack.Screen
           name="WelcomeScreen"
           component={WelcomeScreen}
           options={{ headerShown: false }}
         />
+
+        {/* Home Screen */}
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
           options={{ headerShown: false }}
         />
+
+        {/* Manage Screen */}
         <Stack.Screen
           name="ManageScreen"
           component={ManageScreen}
@@ -311,10 +367,11 @@ export default function App() {
   );
 }
 
-// ======================
-// Styles
-// ======================
+// ============================================
+// Stylesheet
+// ============================================
 const styles = StyleSheet.create({
+  // ---------- Welcome Screen ----------
   welcomeContainer: { flex: 1, backgroundColor: "#4169E1" },
   heroImage: { width: "100%", height: "100%", position: "absolute" },
   overlay: {
@@ -344,8 +401,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   startText: { color: "#4169E1", fontWeight: "bold", fontSize: 18 },
+
+  // ---------- Home Screen ----------
   container: { flex: 1, backgroundColor: "#efebe9", padding: 15 },
-  mainTitle: { fontSize: 28, fontWeight: "800", color: "#4169E1", textAlign: "center" },
+  mainTitle: {
+    fontSize: 28,
+    fontWeight: "800",
+    color: "#4169E1",
+    textAlign: "center",
+  },
   subTitle: {
     textAlign: "center",
     color: "#4169E1",
@@ -384,6 +448,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   addText: { color: "#fff8e1", fontSize: 18, fontWeight: "bold" },
+
+  // ---------- Manage Screen ----------
   formContainer: { backgroundColor: "#f5f5f5", padding: 20 },
   formHeader: {
     fontSize: 24,
