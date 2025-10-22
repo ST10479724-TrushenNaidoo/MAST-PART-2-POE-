@@ -511,3 +511,81 @@ const styles = StyleSheet.create({
   cancelButton: { alignItems: "center", marginTop: 10 },
   cancelButtonText: { color: "#5070d1ff", fontWeight: "bold" },
 });
+
+
+// REFERENCES
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: HTML Form Tag Reference
+// Available At: https://www.w3schools.com/tags/tag_form.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: HTML Input Tag Reference
+// Available At: https://www.w3schools.com/tags/tag_input.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: HTML Select and Option Tags Reference
+// Available At: https://www.w3schools.com/tags/tag_select.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: HTML Textarea Tag Reference
+// Available At: https://www.w3schools.com/tags/tag_textarea.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: JavaScript Array Methods
+// Available At: https://www.w3schools.com/js/js_array_methods.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: JavaScript Conditional (Ternary) Operator
+// Available At: https://www.w3schools.com/js/js_comparisons.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: JavaScript Functions
+// Available At: https://www.w3schools.com/js/js_functions.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: JavaScript JSON Reference (parse and stringify)
+// Available At: https://www.w3schools.com/js/js_json_intro.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: JavaScript split() Method
+// Available At: https://www.w3schools.com/jsref/jsref_split.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: JavaScript Variables and let Keyword
+// Available At: https://www.w3schools.com/js/js_let.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: JavaScript ES6 Features Overview
+// Available At: https://www.w3schools.com/js/js_es6.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: React JSX Syntax
+// Available At: https://www.w3schools.com/react/react_jsx.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: React Components
+// Available At: https://www.w3schools.com/react/react_components.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: React useState Hook
+// Available At: https://www.w3schools.com/react/react_usestate.asp
+
+// Author: W3Schools
+// Version: Latest (2025)
+// Title: React useEffect Hook
+// Available At: https://www.w3schools.com/react/react_useeffect.asp
